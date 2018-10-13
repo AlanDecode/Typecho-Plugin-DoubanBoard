@@ -2,7 +2,7 @@
 // Author: 熊猫小A
 // Link: https://imalan.cn
 
-console.log(`%c DoubanBoard 0.1 %c https://blog.imalan.cn`, `color: #fadfa3; background: #23b7e5; padding:5px 0;`, `background: #1c2b36; padding:5px 0;`);
+console.log(`%c DoubanBoard 0.1 %c https://blog.imalan.cn/archives/168/`, `color: #fadfa3; background: #23b7e5; padding:5px 0;`, `background: #1c2b36; padding:5px 0;`);
 
 
 var curBooks=0;
