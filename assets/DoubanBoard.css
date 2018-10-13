@@ -1,0 +1,195 @@
+.doubanboard-list{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    max-width: 100%;
+    margin-top: 1em;
+}
+.doubanboard-list,.doubanboard-list *{
+    box-sizing: border-box;
+}
+.doubanboard-item {
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    transition: ease all 0.3s;
+    overflow: hidden;
+    background: #f7fbf7;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+}
+.doubanboard-item:hover{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.doubanboard-thumb {
+    width: 100%;
+    /* customize this for diffrent style */
+    padding-top: 141%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.doubanboard-title,.doubanboard-title a{
+    margin: 8px 0!important;
+    font-size: 1.2em!important;
+    overflow: hidden!important;
+    text-overflow: ellipsis!important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    color: #202020 !important;
+    font-weight: 700 !important;
+    border:none !important;
+}
+/* detail panel */
+.doubanboard-info{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    transition: all 0.3s;
+    background-color: #f7fbf7;
+    color: black;
+    font-size: 0.9em;
+    line-height: 1.3em;
+    transform: translateY(100%);
+    padding: 0.5em;
+}
+.doubanboard-info::-webkit-scrollbar{
+    background: rgba(255,255,255,0.7);
+    width: 4px;
+    height: 6px;
+    border-radius:2px
+}
+.doubanboard-info::-webkit-scrollbar-thumb{
+    background: rgba(37, 36, 36, 0.57);
+    border-radius:2px;
+    line-height: 1.15;
+    font-size: 1em;
+}
+.doubanboard-info-show > .doubanboard-info{
+    transform: translateY(0);
+}
+/* special for douban */
+.doubanboard-info>.doubanboard-info-basic{
+    white-space: nowrap!important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* loadmore button (span) */
+.douban-loadmore{
+    display: block;
+    padding: 0.3em;
+    background: black;
+    color: white;
+    transition:0.2s;
+    margin: 20px auto!important;
+    width: max-content;
+    width: -moz-max-content;
+    cursor: pointer;
+}
+.douban-loadmore:hover{
+    background: rgba(0,0,0,0.6);
+}
+
+@media screen and (max-width: 767px){
+    .doubanboard-item{
+        width: 30%;
+        min-width: 30%;
+        max-width: 30%;
+        margin: 1.6%;
+    }
+}
+/* media query for responsive design */
+@media screen and (min-width:769px){
+    .doubanboard-item{
+        width: 22%;
+        min-width: 22%;
+        max-width: 22%;
+        margin: 1.5%;
+    }
+}
+@media screen and (max-width:400px){
+    .doubanboard-item{
+        width: 45%;
+        min-width: 45%;
+        max-width: 45%;
+        margin: 2.5%;
+    }
+}
+
+.douban-single{
+    max-width: 100%;
+    height: 230px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+.douban-single-img{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 24%;
+    height: 100%;
+    float: left;
+    background-size: cover;
+    background-position: center center;
+}
+.douban-single-info{
+    position: absolute;
+    width: 74%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    margin-left: 26%;
+    overflow-y: auto;
+    padding: 0.5em 0.5em 0.5em 0;
+}
+.douban-single-info::-webkit-scrollbar{
+    background: rgba(255,255,255,0.7);
+    width: 4px;
+    height: 6px;
+    border-radius:2px
+}
+.douban-single-info::-webkit-scrollbar-thumb{
+    background: rgba(37, 36, 36, 0.57);
+    border-radius:2px;
+    line-height: 1.15;
+    font-size: 1em;
+}
+.douban-single-summary{
+    margin-top: 0.3em;
+    display: inline-block;
+}
+.douban-single-title{
+    font-size: 1.2em;
+    color: #1abc9c;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    border:none!important;
+}
+.douban-single-rating{
+    background-image: url(/usr/plugins/DoubanBoard/assets/rating.png);
+    display: inline-block;
+    width: 75px;
+    height: 15px;
+}
+.douban-single-meta{
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 0.8em;
+}
+@media screen and (max-width:767px){
+    .douban-single{
+        height: 160px;
+    }
+    .douban-single-img{
+        width: 32%;
+    }
+    .douban-single-info{
+        margin-left: 33%;
+        width: 67%;
+    }
+}
