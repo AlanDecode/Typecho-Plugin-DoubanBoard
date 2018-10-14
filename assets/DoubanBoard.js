@@ -34,9 +34,9 @@ DoubanBoard = {
                     var url=result.alt;
                     var summary=result.summary;
                     var posi_rating=30*(5-Math.floor(rating/2));
-                    if((rating-posi_rating*2)>=0.5) posi_rating=posi_rating-15;
+                    if((rating-Math.floor(rating/2)*2)>=1) posi_rating=posi_rating-15;
                     var posi_myrating=30*(5-Math.floor(myrating/2));
-                    if((myrating-Math.floor(myrating))>=0.5) posi_myrating=posi_myrating-15;
+                    if((myrating-Math.floor(myrating/2)*2)>=1) posi_myrating=posi_myrating-15;
                     var html=`<div class="douban-single-img" style="background-image:url(`+img+`)"></div>
                             <div class="douban-single-info">
                                 <a target="_blank" class="douban-single-title" href="`+url+`">`+title+`</a><br>
@@ -63,9 +63,9 @@ DoubanBoard = {
                     var url=result.alt;
                     var summary=result.summary;
                     var posi_rating=30*(5-Math.floor(rating/2));
-                    if((rating-posi_rating*2)>=0.5) posi_rating=posi_rating-15;
+                    if((rating-Math.floor(rating/2)*2)>=1) posi_rating=posi_rating-15;
                     var posi_myrating=30*(5-Math.floor(myrating/2));
-                    if((myrating-Math.floor(myrating))>=0.5) posi_myrating=posi_myrating-15;
+                    if((myrating-Math.floor(myrating/2)*2)>=1) posi_myrating=posi_myrating-15;
                     var html=`<div class="douban-single-img" style="background-image:url(`+img+`)"></div>
                             <div class="douban-single-info">
                                 <a target="_blank" class="douban-single-title" href="`+url+`">`+title+`</a><br>
