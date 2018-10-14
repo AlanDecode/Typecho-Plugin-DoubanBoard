@@ -55,6 +55,8 @@
     line-height: 1.3em;
     transform: translateY(100%);
     padding: 0.5em;
+    font-size: 16px;
+    font-weight: 400;
 }
 .doubanboard-info::-webkit-scrollbar{
     background: none;
@@ -148,7 +150,10 @@
     right: 0;
     margin-left: 24%;
     overflow-y: auto;
-    padding: 0.5em 0.5em 0.5em 0;
+    padding: 0.2em 0.5em 0.5em 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
 }
 .douban-single-info::-webkit-scrollbar{
     background: none;
@@ -170,7 +175,7 @@
     display: inline-block;
 }
 .douban-single-title{
-    font-size: 1.2em;
+    font-size: 1.3em;
     color: #1abc9c;
     text-decoration: none;
     padding: 0;
@@ -186,6 +191,10 @@
 .douban-single-meta{
     color: rgba(0, 0, 0, 0.5);
     font-size: 0.8em;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 0.8em;
+    display: inline-block;
+    margin: 0.5em 0;
 }
 @media screen and (max-width:767px){
     .douban-single{
@@ -195,7 +204,7 @@
         width: 32%;
     }
     .douban-single-info{
-        margin-left: 33%;
-        width: 67%;
+        margin-left: 35%;
+        width: 65%;
     }
 }
