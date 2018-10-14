@@ -113,10 +113,9 @@ class DoubanAPI
         else{
             $data=json_decode(file_get_contents(__DIR__.'/cache/book.json'))->data;
             $total=count($data);
-            //返回从 from 开始的 10 条记录
             if($From<0 || $From>$total-1) echo json_encode(array());
             else{
-                $end=min($From+10,$total);
+                $end=min($From+$PageSize,$total);
                 $out=array();
                 for ($index=$From; $index<$end; $index++) {
                     array_push($out,$data[$index]);
@@ -149,10 +148,9 @@ class DoubanAPI
         }else{
             $data=json_decode(file_get_contents(__DIR__.'/cache/movie.json'))->data;
             $total=count($data);
-            //返回从 from 开始的 10 条记录
             if($From<0 || $From>$total-1) echo json_encode(array());
             else{
-                $end=min($From+10,$total);
+                $end=min($From+$PageSize,$total);
                 $out=array();
                 for ($index=$From; $index<$end; $index++) {
                     array_push($out,$data[$index]);
