@@ -7,11 +7,11 @@
  * 
  * @package DoubanBoard
  * @author 熊猫小A
- * @version 0.1
+ * @version 0.2
  * @link https://imalan.cn
  */
 
-define('DoubanBoard_Plugin_VERSION', '0.1');
+define('DoubanBoard_Plugin_VERSION', '0.2');
 
 class DoubanBoard_Plugin implements Typecho_Plugin_Interface
 {
@@ -50,10 +50,12 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
      */
     public static function config(Typecho_Widget_Helper_Form $form){
         echo '<b>使用方式</b><br>
-        书单列表：&lt;div id=&quot;douban-book-list&quot; class=&quot;doubanboard-list&quot;&gt;&lt;/div&gt;<br>
-        电影列表：&lt;div id=&quot;douban-movie-list&quot; class=&quot;doubanboard-list&quot;&gt;&lt;/div&gt;<br>
-        单部电影：&lt;div class=&quot;douban-single&quot; data-type=&quot;movie&quot; data-id=&quot;【电影 ID】&quot; data-rating=&quot;【你的评分】&quot;&gt;&lt;/div&gt;<br>
-        单部书籍：&lt;div class=&quot;douban-single&quot; data-type=&quot;book&quot; data-id=&quot;【书籍 ID】&quot; data-rating=&quot;【你的评分】&quot;&gt;&lt;/div&gt;<br>
+        已读书单列表：&lt;div data-status=&quot;read&quot; class=&quot;douban-book-list doubanboard-list&quot;&gt;&lt;/div&gt;<br>
+        在读书单列表：&lt;div data-status=&quot;reading&quot; class=&quot;douban-book-list doubanboard-list&quot;&gt;&lt;/div&gt;<br>
+        想读书单列表：&lt;div data-status=&quot;wish&quot; class=&quot;douban-book-list doubanboard-list&quot;&gt;&lt;/div&gt;<br>
+        已看电影列表：&lt;div id=&quot;douban-movie-list&quot; class=&quot;doubanboard-list&quot;&gt;&lt;/div&gt;<br>
+        单部电影：&lt;div class=&quot;douban-single&quot; data-type=&quot;movie&quot; data-id=&quot;电影 ID&quot; data-rating=&quot;你的评分&quot;&gt;&lt;/div&gt;<br>
+        单部书籍：&lt;div class=&quot;douban-single&quot; data-type=&quot;book&quot; data-id=&quot;书籍 ID&quot; data-rating=&quot;你的评分&quot;&gt;&lt;/div&gt;<br>
         更多介绍：<a href="https://blog.imalan.cn/archives/168/" target="_blank">Typecho-Plugin-DoubanBoard</a>';
         $ID = new Typecho_Widget_Helper_Form_Element_Text('ID', NULL, '', _t('豆瓣 ID'), _t('填写豆瓣ID'));
         $form->addInput($ID);

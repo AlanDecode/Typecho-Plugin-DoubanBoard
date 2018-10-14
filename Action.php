@@ -62,6 +62,31 @@ class DoubanAPI
     }
 
     /**
+     * 从接口解析电影、书籍数据，并返回
+     * 
+     * @access  private
+     * @param   string    $UserID     豆瓣ID
+     * @return  array     返回格式化 array
+     */
+    private static function __getSingleRawData($API,$Type){
+        $raw=json_decode(file_get_contents($API));
+        $data=array('title'=>$raw->title,'rating'=>strval($raw->rating->average),'summary'=>$raw->summary,'url'=>$raw->alt);
+        if($Type=='book'){
+            $data['img']=str_replace("/view/subject/m/public/","/lpic/",$raw->image);
+            $data['meta']=$raw->author[0].' / '.$raw->pubdate.' / '.$raw->publisher;
+        }else{
+            $data['img']=str_replace("webp","jpg",$raw->images->medium);
+            $meta='[导演]'.$raw->directors[0]->name.' / '.$raw->year;
+            foreach ($raw->casts as $cast) {
+                $meta .= ' / '.$cast->name;
+            }
+            $data['meta']=$meta;
+        }
+        return $data;
+    }
+
+
+    /**
      * 检查缓存是否过期
      * 
      * @access  private
@@ -89,29 +114,36 @@ class DoubanAPI
      * @param   int       $ValidTimeSpan      有效时间，Unix 时间戳，s
      * @return  json      返回格式化书单
      */  
-    public static function updateBookCacheAndReturn($UserID,$PageSize,$From,$ValidTimeSpan){
+    public static function updateBookCacheAndReturn($UserID,$PageSize,$From,$ValidTimeSpan,$status){
         if(!$UserID) return json_encode(array());
         $expired = self::__isCacheExpired(__DIR__.'/cache/book.json',$ValidTimeSpan);
         if($expired!=0){
             $raw=self::__getBookRawData($UserID);
-            $data=array();
+            $data_read=array();
+            $data_reading=array();
+            $data_wish=array();
             foreach($raw->collections as $value){
-                if($value->status!='read') continue; 
                 $item=array("img"=>str_replace("/view/subject/m/public/","/lpic/",$value->book->image),
                 "title"=>$value->book->title,
                 "rating"=>$value->book->rating->average,
                 "author"=>$value->book->author[0],
                 "link"=>$value->book->alt,
                 "summary"=>$value->book->summary);
-                array_push($data,$item);
+                if($value->status=='read'){
+                    array_push($data_read,$item);
+                }elseif($value->status=='reading'){
+                    array_push($data_reading,$item);
+                }elseif($value->status=='wish'){
+                    array_push($data_wish,$item);
+                }
             }
             $file=fopen(__DIR__.'/cache/book.json',"w");
-            fwrite($file,json_encode(array('time'=>time(),'data'=>$data)));
+            fwrite($file,json_encode(array('time'=>time(),'data'=>array('read'=>$data_read,'reading'=>$data_reading,'wish'=>$data_wish))));
             fclose($file);
-            return self::updateBookCacheAndReturn($UserID,$PageSize,$From,$ValidTimeSpan);
+            return self::updateBookCacheAndReturn($UserID,$PageSize,$From,$ValidTimeSpan,$status);
         }
         else{
-            $data=json_decode(file_get_contents(__DIR__.'/cache/book.json'))->data;
+            $data=json_decode(file_get_contents(__DIR__.'/cache/book.json'))->data->$status;
             $total=count($data);
             if($From<0 || $From>$total-1) echo json_encode(array());
             else{
@@ -159,6 +191,56 @@ class DoubanAPI
             }
         }
     }
+
+     /**
+     * 从本地读取缓存信息，若不存在则创建，若过期则更新（单条）。并返回格式化 JSON
+     * 
+     * @access  public 
+     * @param   string    $ID                 书籍或者电影 ID
+     * @param   int       $Type               指明是书籍还是电影
+     * @param   int       $ValidTimeSpan      有效时间，Unix 时间戳，s
+     * @return  json      返回格式化数据
+     */  
+    public static function updateSingleCacheAndReturn($ID,$Type,$ValidTimeSpan){
+        if(!$ID || !$Type) return json_encode(array());
+        $FilePath=__DIR__.'/cache/single.json';
+        if(!is_file($FilePath)){
+            $file=fopen($FilePath,"w+");
+            fwrite($file,json_encode(array('book'=>array(),'movie'=>array())));
+            fclose($file);
+            return updateSingleCacheAndReturn($ID,$Type,$ValidTimeSpan);
+        }
+        $file=fopen($FilePath,"r");
+        $data=json_decode(fread($file,filesize($FilePath)));
+        fclose($file);
+        if($Type=='book'){
+            if($data->book && array_key_exists($ID,(array)$data->book) && time()-$data->book->$ID->time<$ValidTimeSpan){
+                return json_encode($data->book->$ID->data);
+            }
+            else{
+                $content=self::__getSingleRawData('https://api.douban.com/v2/book/'.$ID,'book');
+                $data->book=(array)$data->book;
+                $data->book[$ID]=array('time'=>time(),'data'=>$content);
+                $file=fopen($FilePath,"w");
+                fwrite($file,json_encode($data));
+                fclose($file);
+                return json_encode($content);
+            }
+        }else{
+            if($data->movie && array_key_exists($ID,(array)$data->movie) && time()-$data->movie->$ID->time<$ValidTimeSpan){
+                return json_encode($data->movie->$ID->data);
+            }
+            else{
+                $content=self::__getSingleRawData('https://api.douban.com/v2/movie/subject/'.$ID,'movie');
+                $data->movie=(array)$data->movie;
+                $data->movie[$ID]=array('time'=>time(),'data'=>$content);
+                $file=fopen($FilePath,"w");
+                fwrite($file,json_encode($data));
+                fclose($file);
+                return json_encode($content);
+            }
+        }
+    }
 }
 
 class DoubanBoard_Action extends Widget_Abstract_Contents implements Widget_Interface_Do {
@@ -176,16 +258,17 @@ class DoubanBoard_Action extends Widget_Abstract_Contents implements Widget_Inte
         $From=$_GET['from'];
         if($_GET['type']=='book'){
             header("Content-type: application/json");
-            echo DoubanAPI::updateBookCacheAndReturn($UserID,$PageSize,$From,$ValidTimeSpan);
+            $status=$_GET['status'] ? $_GET['status'] : 'read';
+            echo DoubanAPI::updateBookCacheAndReturn($UserID,$PageSize,$From,$ValidTimeSpan,$status);
         }elseif($_GET['type']=='movie'){
             header("Content-type: application/json");
             echo DoubanAPI::updateMovieCacheAndReturn($UserID,$PageSize,$From,$ValidTimeSpan);
         }elseif($_GET['type']=='singlebook'){
             header("Content-type: application/json");
-            echo file_get_contents('https://api.douban.com/v2/book/'.$_GET['id']);
+            echo DoubanAPI::updateSingleCacheAndReturn($_GET['id'],'book',$ValidTimeSpan);
         }elseif($_GET['type']=='singlemovie'){
             header("Content-type: application/json");
-            echo file_get_contents('https://api.douban.com/v2/movie/subject/'.$_GET['id']);
+            echo DoubanAPI::updateSingleCacheAndReturn($_GET['id'],'movie',$ValidTimeSpan);
         }else{
             echo json_encode(array());
         }
