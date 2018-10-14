@@ -90,8 +90,8 @@
     color: white;
     transition:0.2s;
     margin: 20px auto!important;
-    width: max-content;
-    width: -moz-max-content;
+    width: 6em;
+    text-align: center;
     cursor: pointer;
 }
 .douban-loadmore:hover{
