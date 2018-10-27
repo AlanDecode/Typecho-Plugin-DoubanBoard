@@ -7,11 +7,11 @@
  * 
  * @package DoubanBoard
  * @author 熊猫小A
- * @version 0.2
+ * @version 0.3
  * @link https://imalan.cn
  */
 
-define('DoubanBoard_Plugin_VERSION', '0.2');
+define('DoubanBoard_Plugin_VERSION', '0.3');
 
 class DoubanBoard_Plugin implements Typecho_Plugin_Interface
 {
@@ -83,7 +83,7 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
      */
     public static function header()
     {
-        echo '<link rel="stylesheet" href="/usr/plugins/DoubanBoard/assets/DoubanBoard.0.2.1.css?v='.DoubanBoard_Plugin_VERSION.'" />';
+        echo '<link rel="stylesheet" href="/usr/plugins/DoubanBoard/assets/DoubanBoard.0.3.css?v='.DoubanBoard_Plugin_VERSION.'" />';
         if (!empty(Helper::options()->plugin('DoubanBoard')->loadJQ) && in_array('jq', Helper::options()->plugin('DoubanBoard')->loadJQ))
         {
             echo '<script src="/usr/plugins/DoubanBoard/assets/jquery.min.js"></script>';
@@ -98,7 +98,7 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
      */
     public static function footer()
     {
-        echo '<script type="text/javascript" src="/usr/plugins/DoubanBoard/assets/DoubanBoard.0.2.js?v='.DoubanBoard_Plugin_VERSION.'"></script>';
+        echo '<script type="text/javascript" src="/usr/plugins/DoubanBoard/assets/DoubanBoard.0.3.js?v='.DoubanBoard_Plugin_VERSION.'"></script>';
     }
 }
 ?>

@@ -48,6 +48,7 @@
     width: 100%;
     height: 100%;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
     transition: all 0.3s;
     background-color: #f7fbf7;
     color: black;
@@ -150,6 +151,7 @@
     right: 0;
     margin-left: 24%;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding: 0.2em 0.5em 0.5em 0;
     font-size: 16px;
     font-weight: 400;
