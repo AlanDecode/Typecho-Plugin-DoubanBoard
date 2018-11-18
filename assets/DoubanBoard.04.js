@@ -1,8 +1,7 @@
-// RAW.js
 // Author: 熊猫小A
-// Link: https://imalan.cn
+// Link: https://www.imalan.cn
 
-console.log(`%c DoubanBoard 0.3 %c https://blog.imalan.cn/archives/168/`, `color: #fadfa3; background: #23b7e5; padding:5px 0;`, `background: #1c2b36; padding:5px 0;`);
+console.log(`%c DoubanBoard 0.4 %c https://blog.imalan.cn/archives/168/`, `color: #fadfa3; background: #23b7e5; padding:5px 0;`, `background: #1c2b36; padding:5px 0;`);
 
 
 var curBooks_read=0;
@@ -69,7 +68,7 @@ DoubanBoard = {
         var api="/index.php/DoubanBoard?type=book&from="+String(curBooks)+"&status="+status;
         $.getJSON(api,function(result){
             $(`#loadMoreBooks_`+status).html("加载更多");
-            if(result.length<10){
+            if(result.length<DoubanPageSize){
                 $(`#loadMoreBooks_`+status).html("没有啦");
             }
             $.each(result,function(i,item){
@@ -102,7 +101,7 @@ DoubanBoard = {
         $("#loadMoreMovies").html("加载中...");
         $.getJSON("/index.php/DoubanBoard?type=movie&from="+String(curMovies),function(result){
             $("#loadMoreMovies").html("加载更多");
-            if(result.length<10){
+            if(result.length<DoubanPageSize){
                 $("#loadMoreMovies").html("没有啦");
             }
             $.each(result,function(i,item){
@@ -127,7 +126,6 @@ $(document).on('pjax:end', function() {
 
 $(document).click(function(e){
     var target=e.target;
-    console.log(target);
     $(".doubanboard-item").removeClass("doubanboard-info-show");
     $(".doubanboard-item").each(function(){
         if($(target).parent()[0]==$(this)[0] || $(target)==$(this)[0]){
