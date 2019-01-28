@@ -14,6 +14,20 @@
 <?php
 require('ParserDom.php');
 
+function curl_file_get_contents($_url){
+    $myCurl = curl_init($_url);
+    //不验证证书
+    curl_setopt($myCurl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($myCurl, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($myCurl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($myCurl,  CURLOPT_HEADER, false);
+    //获取
+    $content = curl_exec($myCurl);
+    //关闭
+    curl_close($myCurl);
+    return $content;
+}
+
 class DoubanAPI
 {   
     /**
@@ -25,7 +39,7 @@ class DoubanAPI
      */
     private static function __getBookRawData($UserID){
         $api='https://api.douban.com/v2/book/user/'.$UserID.'/collections?count=100';
-        return json_decode(file_get_contents($api));
+        return json_decode(curl_file_get_contents($api));
     }
 
     /**
@@ -39,7 +53,7 @@ class DoubanAPI
         $api='https://movie.douban.com/people/'.$UserID.'/collect';
         $data=array();
         while($api!=null){
-            $raw=file_get_contents($api);
+            $raw=curl_file_get_contents($api);
             if($raw==null || $raw=="") break;
             $doc = new \HtmlParser\ParserDom($raw);
             $itemArray = $doc->find("div.item");
@@ -69,7 +83,7 @@ class DoubanAPI
      * @return  array     返回格式化 array
      */
     private static function __getSingleRawData($API,$Type){
-        $raw=json_decode(file_get_contents($API));
+        $raw=json_decode(curl_file_get_contents($API));
         $data=array('title'=>$raw->title,'rating'=>strval($raw->rating->average),'summary'=>$raw->summary,'url'=>$raw->alt);
         if($Type=='book'){
             $data['img']=str_replace("/view/subject/m/public/","/lpic/",$raw->image);
