@@ -20,6 +20,7 @@ function curl_file_get_contents($_url){
     curl_setopt($myCurl, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($myCurl, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt($myCurl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_REFERER, 'https://www.douban.com');
     curl_setopt($myCurl,  CURLOPT_HEADER, false);
     //获取
     $content = curl_exec($myCurl);
@@ -62,6 +63,10 @@ class DoubanAPI
                 $movie_name = str_replace(array(" ", "　", "\t", "\n", "\r"),
                                           array("", "", "", "", ""),$t->getPlainText());
                 $movie_img  = $v->find("div.pic a img", 0)->getAttr("src");
+
+                // 使用 wp 接口解决防盗链
+                $movie_img = 'https://i0.wp.com/'.str_replace(array('http://', 'https://'), '', $movie_img);
+
                 $movie_url  = $t->find("a", 0)->getAttr("href");
                 $data[] = array("name" => $movie_name, "img" => $movie_img, "url" => $movie_url);
             }
@@ -96,6 +101,7 @@ class DoubanAPI
             }
             $data['meta']=$meta;
         }
+        $data['img'] = 'https://i0.wp.com/'.str_replace(array('http://', 'https://'), '', $data['img']);
         return $data;
     }
 
@@ -143,6 +149,9 @@ class DoubanAPI
                 "author"=>$value->book->author[0],
                 "link"=>$value->book->alt,
                 "summary"=>$value->book->summary);
+
+                $item['img'] = 'https://i0.wp.com/'.str_replace(array('http://', 'https://'), '', $item['img']);
+                
                 if($value->status=='read'){
                     array_push($data_read,$item);
                 }elseif($value->status=='reading'){
