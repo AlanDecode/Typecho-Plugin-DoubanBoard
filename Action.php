@@ -39,7 +39,7 @@ class DoubanAPI
      * @return  array     返回 JSON 解码后的 array
      */
     private static function __getBookRawData($UserID){
-        $api='https://api.douban.com/v2/book/user/'.$UserID.'/collections?count=100';
+        $api='https://api.douban.com/v2/book/user/'.$UserID.'/collections?apikey=0b2bdeda43b5688921839c8ecb20399b&count=100';
         return json_decode(curl_file_get_contents($api));
     }
 
@@ -241,7 +241,7 @@ class DoubanAPI
                 return json_encode($data->book->$ID->data);
             }
             else{
-                $content=self::__getSingleRawData('https://api.douban.com/v2/book/'.$ID,'book');
+                $content=self::__getSingleRawData('https://api.douban.com/v2/book/'.$ID.'?apikey=0b2bdeda43b5688921839c8ecb20399b','book');
                 $data->book=(array)$data->book;
                 $data->book[$ID]=array('time'=>time(),'data'=>$content);
                 $file=fopen($FilePath,"w");
@@ -254,7 +254,7 @@ class DoubanAPI
                 return json_encode($data->movie->$ID->data);
             }
             else{
-                $content=self::__getSingleRawData('https://api.douban.com/v2/movie/subject/'.$ID,'movie');
+                $content=self::__getSingleRawData('https://api.douban.com/v2/movie/subject/'.$ID.'?apikey=0b2bdeda43b5688921839c8ecb20399b','movie');
                 $data->movie=(array)$data->movie;
                 $data->movie[$ID]=array('time'=>time(),'data'=>$content);
                 $file=fopen($FilePath,"w");
