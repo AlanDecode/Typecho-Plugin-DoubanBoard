@@ -18,6 +18,8 @@
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
+    border: none!important;
+    display: block;
 }
 .doubanboard-item:hover{
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);

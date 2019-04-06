@@ -105,10 +105,10 @@ DoubanBoard = {
                 $("#loadMoreMovies").html("没有啦");
             }
             $.each(result,function(i,item){
-                var html=`<div id="doubanboard-movie-item-`+String(curMovies)+`" class="doubanboard-item">
+                var html=`<a href="`+item.url+`" target="_blank" id="doubanboard-movie-item-`+String(curMovies)+`" class="doubanboard-item">
                             <div class="doubanboard-thumb" style="background-image:url(`+item.img+`)"></div>
-                            <div class="doubanboard-title"><a href="`+item.url+`" target="_blank">`+item.name+`</a></div>
-                        </div>`;
+                            <div class="doubanboard-title">`+item.name+`</div>
+                        </a>`;
                 $("#douban-movie-list").append(html);
                 curMovies++;
             });
