@@ -20,7 +20,7 @@ function curl_file_get_contents($_url){
     curl_setopt($myCurl, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($myCurl, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt($myCurl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_REFERER, 'https://www.douban.com');
+    curl_setopt($myCurl, CURLOPT_REFERER, 'https://www.douban.com');
     curl_setopt($myCurl,  CURLOPT_HEADER, false);
     //获取
     $content = curl_exec($myCurl);
