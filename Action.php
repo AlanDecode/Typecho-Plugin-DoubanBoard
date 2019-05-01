@@ -278,7 +278,10 @@ class DoubanBoard_Action extends Widget_Abstract_Contents implements Widget_Inte
         $UserID=$options->ID;
         $PageSize=$options->PageSize ? $options->PageSize : 10;
         $ValidTimeSpan=$options->ValidTimeSpan ? $options->ValidTimeSpan : 60*60*24;
-        $From=$_GET['from'];
+        $From = 0;
+        if(array_key_exists('from', $_GET)) {
+            $From = $_GET['from'];
+        }
         if($_GET['type']=='book'){
             header("Content-type: application/json");
             $status=$_GET['status'] ? $_GET['status'] : 'read';
