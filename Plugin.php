@@ -83,7 +83,7 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
      */
     public static function header()
     {
-        echo '<link rel="stylesheet" href="/usr/plugins/DoubanBoard/assets/DoubanBoard.05.css?v='.DoubanBoard_Plugin_VERSION.'" />';
+        echo '<link rel="stylesheet" href="/usr/plugins/DoubanBoard/assets/DoubanBoard.06.css?v='.DoubanBoard_Plugin_VERSION.'" />';
         echo '<script>var DoubanPageSize='.Helper::options()->plugin('DoubanBoard')->PageSize.'</script>';
         if (!empty(Helper::options()->plugin('DoubanBoard')->loadJQ) && in_array('jq', Helper::options()->plugin('DoubanBoard')->loadJQ))
         {

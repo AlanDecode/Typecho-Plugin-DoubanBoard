@@ -101,7 +101,8 @@
     background: rgba(0,0,0,0.6);
 }
 
-@media screen and (max-width: 767px){
+/* media query for responsive design */
+@media screen and (max-width: 767.5px){
     .doubanboard-item{
         width: 30%;
         min-width: 30%;
@@ -109,8 +110,7 @@
         margin: 1.6%;
     }
 }
-/* media query for responsive design */
-@media screen and (min-width:769px){
+@media screen and (min-width:767.5px){
     .doubanboard-item{
         width: 22%;
         min-width: 22%;
