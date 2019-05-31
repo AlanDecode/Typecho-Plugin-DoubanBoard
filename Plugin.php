@@ -1,6 +1,5 @@
-<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
+<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
-<?php
 /**
  * 在博客上展示你的豆瓣书单与豆瓣影单
  *  
@@ -102,4 +101,3 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
         echo '<script type="text/javascript" src="/usr/plugins/DoubanBoard/assets/DoubanBoard.05.js?v='.DoubanBoard_Plugin_VERSION.'"></script>';
     }
 }
-?>
