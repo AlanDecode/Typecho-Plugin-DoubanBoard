@@ -64,6 +64,8 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
         $form->addInput($ValidTimeSpan);
         $loadJQ= new Typecho_Widget_Helper_Form_Element_Checkbox('loadJQ',  array('jq'=>_t('配置是否引入 JQuery：勾选则引入不勾选则不引入<br>')),array('jq'), _t('基本设置'));
         $form->addInput($loadJQ);
+        $key = new Typecho_Widget_Helper_Form_Element_Text('RefreshKey', NULL, 'your_key', _t('Refresh Key'), _t('强制刷新时使用的 key，设置后不要泄露。通过访问 '.Helper::options()->index.'/DoubanBoard?type=forceRefresh&key=[key] 即可刷新。'));
+        $form->addInput($key);
     }
     /**
      * 个人用户的配置面板

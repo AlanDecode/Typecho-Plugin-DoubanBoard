@@ -296,12 +296,10 @@ class DoubanBoard_Action extends Widget_Abstract_Contents implements Widget_Inte
             header("Content-type: application/json");
             echo DoubanAPI::updateSingleCacheAndReturn($_GET['id'],'movie',$ValidTimeSpan);
         }elseif($_GET['type']=='forceRefresh'){
-            /** 忽略超时 */
-            if (function_exists('ignore_user_abort')) {
-                ignore_user_abort(true);
-            }
-            DoubanAPI::updateBookCacheAndReturn($UserID,$PageSize,$From,10,'read');
-            DoubanAPI::updateMovieCacheAndReturn($UserID,$PageSize,$From,10);
+            if (!isset($_GET['key'])) die('Invalid key.');
+            if ($_GET['key'] != $options->RefreshKey) die('Invalid key.');
+            echo DoubanAPI::updateMovieCacheAndReturn($UserID,$PageSize,$From,1);
+            echo DoubanAPI::updateBookCacheAndReturn($UserID,$PageSize,$From,1,'read');
         }else{
             echo json_encode(array());
         }
