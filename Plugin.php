@@ -64,8 +64,6 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
         $form->addInput($ValidTimeSpan);
         $loadJQ= new Typecho_Widget_Helper_Form_Element_Checkbox('loadJQ',  array('jq'=>_t('配置是否引入 JQuery：勾选则引入不勾选则不引入<br>')),array('jq'), _t('基本设置'));
         $form->addInput($loadJQ);
-        $key = new Typecho_Widget_Helper_Form_Element_Text('RefreshKey', NULL, 'your_key', _t('Refresh Key'), _t('强制刷新时使用的 key，设置后不要泄露。通过访问 '.Helper::options()->index.'/DoubanBoard?type=forceRefresh&key=[key] 即可刷新。'));
-        $form->addInput($key);
     }
     /**
      * 个人用户的配置面板
@@ -84,13 +82,9 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
      */
     public static function header()
     {
-        echo '<link rel="stylesheet" href="/usr/plugins/DoubanBoard/assets/DoubanBoard.06.css?v='.DoubanBoard_Plugin_VERSION.'" />';
-        echo '<script>var DoubanPageSize='.Helper::options()->plugin('DoubanBoard')->PageSize.'</script>';
-        if (!empty(Helper::options()->plugin('DoubanBoard')->loadJQ) && in_array('jq', Helper::options()->plugin('DoubanBoard')->loadJQ))
-        {
-            echo '<script src="/usr/plugins/DoubanBoard/assets/jquery.min.js"></script>';
-        }
+        
     }  
+
     /**
      * 在底部输出所需 JS
      * 
@@ -100,6 +94,23 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
      */
     public static function footer()
     {
-        echo '<script type="text/javascript" src="/usr/plugins/DoubanBoard/assets/DoubanBoard.05.js?v='.DoubanBoard_Plugin_VERSION.'"></script>';
+        echo '<link rel="stylesheet" href="';
+        Helper::options()->pluginUrl('DoubanBoard/assets/DoubanBoard.06.css');
+        echo '?v='.DoubanBoard_Plugin_VERSION.'" />';
+        echo '<script>var DoubanPageSize='.Helper::options()->plugin('DoubanBoard')->PageSize.'</script>';
+        
+        if (!empty(Helper::options()->plugin('DoubanBoard')->loadJQ) && in_array('jq', Helper::options()->plugin('DoubanBoard')->loadJQ))
+        {
+            echo '<script src="';
+            Helper::options()->pluginUrl('DoubanBoard/assets/query.min.js');
+            echo '"></script>';
+        }
+        echo '<script>var DoubanAPI = "';
+        Helper::options()->index('/DoubanBoard');
+        echo '"</script>';
+
+        echo '<script type="text/javascript" src="';
+        Helper::options()->pluginUrl('DoubanBoard/assets/DoubanBoard.06.js');
+        echo '?v='.DoubanBoard_Plugin_VERSION.'"></script>';
     }
 }
