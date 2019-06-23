@@ -231,6 +231,14 @@ class DoubanAPI
 
         $data = $cache['data'];
         $total = count($data);
+
+        // 没有数据，需要在下次刷新
+        if ($total == 0) {
+            $cache['time'] = 1;
+            file_put_contents(__DIR__ . '/cache/movie.json', json_encode($cache));
+            return json_encode(array());
+        }
+
         if ($From < 0 || $From > $total - 1) {
             echo json_encode(array());
         } else {

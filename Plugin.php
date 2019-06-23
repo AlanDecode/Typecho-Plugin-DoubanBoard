@@ -23,7 +23,6 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
      */
     public static function activate()
     {
-        Typecho_Plugin::factory('Widget_Archive')->header = array('DoubanBoard_Plugin', 'header');
         Typecho_Plugin::factory('Widget_Archive')->footer = array('DoubanBoard_Plugin', 'footer');
         Helper::addRoute("route_DoubanBoard","/DoubanBoard","DoubanBoard_Action",'action');
     }
@@ -74,17 +73,6 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
      */
     public static function personalConfig(Typecho_Widget_Helper_Form $form){}
     
-    /**
-     * 输出头部css
-     * 
-     * @access public
-     * @return void
-     */
-    public static function header()
-    {
-        
-    }  
-
     /**
      * 在底部输出所需 JS
      * 
