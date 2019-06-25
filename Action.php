@@ -186,6 +186,11 @@ class DoubanAPI
             $cache = array('time' => time(),
                 'data' => array('read' => $data_read, 'reading' => $data_reading, 'wish' => $data_wish));
 
+            // 如果 cache 全空，很可能没有获取到数据，时间戳置 1
+            if (count($data_read) == 0 && count($data_reading) == 0 && count($data_wish) == 0) {
+                $cache['time'] = 1;
+            }
+
             file_put_contents(__DIR__ . '/cache/book.json', json_encode($cache));
         }
 
@@ -289,6 +294,7 @@ class DoubanAPI
         // 刷新数据
         if (time() - $cache[$Type][$ID]['time'] > $ValidTimeSpan) {
             $needUpdate = true;
+            $cache[$Type][$ID]['time'] = time();
             if ($Type == 'book') {
                 $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/book/' . $ID . '?apikey=0b2bdeda43b5688921839c8ecb20399b', 'book');
             } else {
