@@ -90,7 +90,7 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
         if (!empty(Helper::options()->plugin('DoubanBoard')->loadJQ) && in_array('jq', Helper::options()->plugin('DoubanBoard')->loadJQ))
         {
             echo '<script src="';
-            Helper::options()->pluginUrl('DoubanBoard/assets/query.min.js');
+            Helper::options()->pluginUrl('DoubanBoard/assets/jquery.min.js');
             echo '"></script>';
         }
         echo '<script>var DoubanAPI = "';
