@@ -2,8 +2,9 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
-    max-width: 100%;
     margin-top: 1em;
+    width: calc(100% + 15px);
+    margin-left: -15px;
 }
 .doubanboard-list,.doubanboard-list *{
     box-sizing: border-box;
@@ -20,6 +21,8 @@
     justify-content: flex-start;
     border: none!important;
     display: block;
+    margin-left: 15px;
+    margin-bottom: 15px;
 }
 .doubanboard-item:hover{
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -104,26 +107,17 @@
 /* media query for responsive design */
 @media screen and (max-width: 767.5px){
     .doubanboard-item{
-        width: 30%;
-        min-width: 30%;
-        max-width: 30%;
-        margin: 1.6%;
+        width: calc(33.333333333% - 15px);
     }
 }
 @media screen and (min-width:767.5px){
     .doubanboard-item{
-        width: 22%;
-        min-width: 22%;
-        max-width: 22%;
-        margin: 1.5%;
+        width: calc(25% - 15px);
     }
 }
 @media screen and (max-width:400px){
     .doubanboard-item{
-        width: 45%;
-        min-width: 45%;
-        max-width: 45%;
-        margin: 2.5%;
+        width: calc(50% - 15px);
     }
 }
 

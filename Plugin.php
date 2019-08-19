@@ -83,7 +83,7 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
     public static function footer()
     {
         echo '<link rel="stylesheet" href="';
-        Helper::options()->pluginUrl('DoubanBoard/assets/DoubanBoard.06.css');
+        Helper::options()->pluginUrl('DoubanBoard/assets/DoubanBoard.07.css');
         echo '?v='.DoubanBoard_Plugin_VERSION.'" />';
         echo '<script>var DoubanPageSize='.Helper::options()->plugin('DoubanBoard')->PageSize.'</script>';
         
