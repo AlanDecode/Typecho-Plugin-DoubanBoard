@@ -308,18 +308,29 @@ public static function updateMovieCacheAndReturn($UserID, $PageSize, $From, $Val
         }
 
         // 刷新数据
-        if (time() - $cache[$Type][$ID]['time'] > $ValidTimeSpan) {
-            $needUpdate = true;
+        // single 数据仅请求一次
+        // if (time() - $cache[$Type][$ID]['time'] > $ValidTimeSpan) {
+        //     $needUpdate = true;
+        //     $cache[$Type][$ID]['time'] = time();
+        //     if ($Type == 'book') {
+        //         $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/book/' . $ID . '?apikey=0b2bdeda43b5688921839c8ecb20399b', 'book');
+        //     } else {
+        //         $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/movie/subject/' . $ID . '?apikey=0b2bdeda43b5688921839c8ecb20399b', 'movie');
+        //     }
+        // }
+
+        // if($needUpdate)
+        //     file_put_contents($FilePath, json_encode($cache));
+        
+        if ($needUpdate) {
             $cache[$Type][$ID]['time'] = time();
             if ($Type == 'book') {
                 $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/book/' . $ID . '?apikey=0b2bdeda43b5688921839c8ecb20399b', 'book');
             } else {
                 $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/movie/subject/' . $ID . '?apikey=0b2bdeda43b5688921839c8ecb20399b', 'movie');
             }
-        }
-
-        if($needUpdate)
             file_put_contents($FilePath, json_encode($cache));
+        }
         
         return json_encode($cache[$Type][$ID]['data']);
     }
