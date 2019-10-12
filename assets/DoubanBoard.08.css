@@ -187,12 +187,11 @@
     height: 15px;
 }
 .douban-single-meta{
-    color: rgba(0, 0, 0, 0.5);
     font-size: 0.8em;
-    color: rgba(0, 0, 0, 0.5);
     font-size: 0.8em;
     display: inline-block;
     margin: 0.5em 0;
+    opacity: 0.5;
 }
 @media screen and (max-width:767px){
     .douban-single{
