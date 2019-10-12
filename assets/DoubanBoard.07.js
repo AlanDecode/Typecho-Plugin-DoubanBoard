@@ -1,27 +1,36 @@
 // Author: 熊猫小A
 // Link: https://www.imalan.cn
 
-console.log(`%c DoubanBoard 0.4 %c https://blog.imalan.cn/archives/168/`, `color: #fadfa3; background: #23b7e5; padding:5px 0;`, `background: #1c2b36; padding:5px 0;`);
+console.log(`%c DoubanBoard 0.5 %c https://blog.imalan.cn/archives/168/`, `color: #fadfa3; background: #23b7e5; padding:5px 0;`, `background: #1c2b36; padding:5px 0;`);
 
 
 var curBooks_read = 0;
 var curBooks_reading = 0;
 var curBooks_wish = 0;
-var curMovies = 0;
+var curMovies_watched = 0;
+var curMovies_watching = 0;
+var curMovies_wish = 0;
 DoubanBoard = {
     initDoubanBoard: function () {
         $(`.douban-book-list[data-status="read"]`).after(`<div class="douban-loadmore" id="loadMoreBooks_read" onclick="DoubanBoard.loadBooks('read');">加载更多</div>`);
         $(`.douban-book-list[data-status="reading"]`).after(`<div class="douban-loadmore" id="loadMoreBooks_reading" onclick="DoubanBoard.loadBooks('reading');">加载更多</div>`);
         $(`.douban-book-list[data-status="wish"]`).after(`<div class="douban-loadmore" id="loadMoreBooks_wish" onclick="DoubanBoard.loadBooks('wish');">加载更多</div>`);
-        $("#douban-movie-list").after(`<div class="douban-loadmore" id="loadMoreMovies" onclick="DoubanBoard.loadMovies();">加载更多</div>`);
-        curMovies = 0;
+        $(`.douban-movie-list[data-status="watched"]`).after(`<div class="douban-loadmore" id="loadMoreMovies_watched" onclick="DoubanBoard.loadMovies('watched');">加载更多</div>`);
+        $(`.douban-movie-list[data-status="watching"]`).after(`<div class="douban-loadmore" id="loadMoreMovies_watching" onclick="DoubanBoard.loadMovies('watching');">加载更多</div>`);
+        $(`.douban-movie-list[data-status="wish"]`).after(`<div class="douban-loadmore" id="loadMoreMovies_wish" onclick="DoubanBoard.loadMovies('wish');">加载更多</div>`);
+        
         curBooks_read = 0;
         curBooks_reading = 0;
         curBooks_wish = 0;
+        curMovies_watched = 0;
+        curMovies_watching = 0;
+        curMovies_wish = 0;
         DoubanBoard.loadBooks('read');
         DoubanBoard.loadBooks('reading');
         DoubanBoard.loadBooks('wish');
-        DoubanBoard.loadMovies();
+        DoubanBoard.loadMovies('watched');
+        DoubanBoard.loadMovies('watching');
+        DoubanBoard.loadMovies('wish');
         DoubanBoard.loadSingleBoard();
     },
 
@@ -60,7 +69,7 @@ DoubanBoard = {
     },
 
     loadBooks: function (status) {
-        if ($(".douban-book-list").length < 1) return;
+        if ($(`.douban-book-list[data-status="` + status + `"]`).length < 1) return;
         $(`#loadMoreBooks_` + status).html("加载中...");
         var curBooks;
         if (status == 'read') curBooks = curBooks_read;
@@ -97,21 +106,29 @@ DoubanBoard = {
         });
     },
 
-    loadMovies: function () {
-        if ($("#douban-movie-list").length < 1) return;
-        $("#loadMoreMovies").html("加载中...");
-        $.getJSON(window.DoubanAPI + "?type=movie&from=" + String(curMovies), function (result) {
-            $("#loadMoreMovies").html("加载更多");
+    loadMovies: function (status) {
+        if ($(`.douban-movie-list[data-status="` + status + `"]`).length < 1) return;
+        $("#loadMoreMovies_" + status).html("加载中...");
+
+        var curMovies;
+        if (status == 'watched') curMovies = curMovies_watched;
+        else if (status == 'watching') curMovies = curMovies_watching;
+        else curMovies = curMovies_wish;
+
+        $.getJSON(window.DoubanAPI + "?type=movie&from=" + String(curMovies) + "&status=" + status, function (result) {
+            $("#loadMoreMovies_" + status).html("加载更多");
             if (result.length < DoubanPageSize) {
-                $("#loadMoreMovies").html("没有啦");
+                $("#loadMoreMovies_" + status).html("没有啦");
             }
             $.each(result, function (i, item) {
                 var html = `<a href="` + item.url + `" target="_blank" id="doubanboard-movie-item-` + String(curMovies) + `" class="doubanboard-item">
                             <div class="doubanboard-thumb" style="background-image:url(`+ item.img + `)"></div>
                             <div class="doubanboard-title">`+ item.name + `</div>
                         </a>`;
-                $("#douban-movie-list").append(html);
-                curMovies++;
+                $(`.douban-movie-list[data-status="` + status + `"]`).append(html);
+                if (status == 'watched') curMovies_watched++;
+                else if (status == 'watching') curMovies_watching++;
+                else curMovies_wish++;
             });
         });
     }

@@ -57,9 +57,9 @@ class DoubanAPI
      * @param   string    $UserID     豆瓣ID
      * @return  array     返回格式化 array
      */
-    private static function __getMovieRawData($UserID)
+    private static function __getMovieRawDataHelper($UserID, $Type='collect')
     {
-        $api = 'https://movie.douban.com/people/' . $UserID . '/collect';
+        $api = 'https://movie.douban.com/people/' . $UserID . '/' . $Type;
         $data = array();
         while ($api != null) {
             $raw = curl_file_get_contents($api, 'movie');
@@ -88,6 +88,18 @@ class DoubanAPI
                 $api = null;
             }
         }
+        return $data;
+    }
+
+    /**
+     * 从豆瓣网页获取想看、已看、在看信息
+     */
+    private static function __getMovieRawData($UserID)
+    {
+        $data = array();
+        $data['watching'] = self::__getMovieRawDataHelper($UserID, 'do');
+        $data['wish'] = self::__getMovieRawDataHelper($UserID, 'wish');
+        $data['watched'] = self::__getMovieRawDataHelper($UserID, 'collect');
         return $data;
     }
 
@@ -222,7 +234,7 @@ class DoubanAPI
      * @param   int       $ValidTimeSpan      有效时间，Unix 时间戳，s
      * @return  json      返回格式化影单
      */
-    public static function updateMovieCacheAndReturn($UserID, $PageSize, $From, $ValidTimeSpan)
+public static function updateMovieCacheAndReturn($UserID, $PageSize, $From, $ValidTimeSpan, $status='watched')
     {
         if (!$UserID) {
             return json_encode(array());
@@ -238,15 +250,16 @@ class DoubanAPI
         }
 
         $data = $cache['data'];
-        $total = count($data);
 
         // 没有数据，需要在下次刷新
-        if ($total == 0) {
+        if (count($data['watching'])==0 && count($data['wish'])==0 && count($data['watched'])==0) {
             $cache['time'] = 1;
             file_put_contents(__DIR__ . '/cache/movie.json', json_encode($cache));
             return json_encode(array());
         }
 
+        $data = $data[$status];
+        $total = count($data);
         if ($From < 0 || $From > $total - 1) {
             echo json_encode(array());
         } else {
@@ -332,11 +345,12 @@ class DoubanBoard_Action extends Widget_Abstract_Contents implements Widget_Inte
         }
         if ($_GET['type'] == 'book') {
             header("Content-type: application/json");
-            $status = $_GET['status'] ? $_GET['status'] : 'read';
+            $status = array_key_exists('status', $_GET) ? $_GET['status'] : 'read';
             echo DoubanAPI::updateBookCacheAndReturn($UserID, $PageSize, $From, $ValidTimeSpan, $status);
         } elseif ($_GET['type'] == 'movie') {
             header("Content-type: application/json");
-            echo DoubanAPI::updateMovieCacheAndReturn($UserID, $PageSize, $From, $ValidTimeSpan);
+            $status = array_key_exists('status', $_GET) ? $_GET['status'] : 'watched';
+            echo DoubanAPI::updateMovieCacheAndReturn($UserID, $PageSize, $From, $ValidTimeSpan, $status);
         } elseif ($_GET['type'] == 'singlebook') {
             header("Content-type: application/json");
             echo DoubanAPI::updateSingleCacheAndReturn($_GET['id'], 'book', $ValidTimeSpan);

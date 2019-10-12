@@ -6,11 +6,11 @@
  * 
  * @package DoubanBoard
  * @author 熊猫小A
- * @version 0.4
+ * @version 0.5
  * @link https://www.imalan.cn
  */
 
-define('DoubanBoard_Plugin_VERSION', '0.4');
+define('DoubanBoard_Plugin_VERSION', '0.5');
 
 class DoubanBoard_Plugin implements Typecho_Plugin_Interface
 {
@@ -51,13 +51,15 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
         已读书单列表：&lt;div data-status=&quot;read&quot; class=&quot;douban-book-list doubanboard-list&quot;&gt;&lt;/div&gt;<br>
         在读书单列表：&lt;div data-status=&quot;reading&quot; class=&quot;douban-book-list doubanboard-list&quot;&gt;&lt;/div&gt;<br>
         想读书单列表：&lt;div data-status=&quot;wish&quot; class=&quot;douban-book-list doubanboard-list&quot;&gt;&lt;/div&gt;<br>
-        已看电影列表：&lt;div id=&quot;douban-movie-list&quot; class=&quot;doubanboard-list&quot;&gt;&lt;/div&gt;<br>
-        单部电影：&lt;div class=&quot;douban-single&quot; data-type=&quot;movie&quot; data-id=&quot;电影 ID&quot; data-rating=&quot;你的评分&quot;&gt;&lt;/div&gt;<br>
-        单部书籍：&lt;div class=&quot;douban-single&quot; data-type=&quot;book&quot; data-id=&quot;书籍 ID&quot; data-rating=&quot;你的评分&quot;&gt;&lt;/div&gt;<br>
+        已看电影列表：&lt;div data-status=&quot;watched&quot; class=&quot;douban-movie-list doubanboard-list&quot;&gt;&lt;/div&gt;<br>
+        在看电影列表：&lt;div data-status=&quot;watching&quot; class=&quot;douban-movie-list doubanboard-list&quot;&gt;&lt;/div&gt;<br>
+        想看电影列表：&lt;div data-status=&quot;wish&quot; class=&quot;douban-movie-list doubanboard-list&quot;&gt;&lt;/div&gt;<br>
+        单部电影：&lt;div data-type=&quot;movie&quot; class=&quot;douban-single&quot; data-id=&quot;电影 ID&quot; data-rating=&quot;你的评分&quot;&gt;&lt;/div&gt;<br>
+        单部书籍：&lt;div data-type=&quot;book&quot; class=&quot;douban-single&quot; data-id=&quot;书籍 ID&quot; data-rating=&quot;你的评分&quot;&gt;&lt;/div&gt;<br>
         更多介绍：<a href="https://blog.imalan.cn/archives/168/" target="_blank">Typecho-Plugin-DoubanBoard</a>';
         $ID = new Typecho_Widget_Helper_Form_Element_Text('ID', NULL, '', _t('豆瓣 ID'), _t('填写豆瓣ID'));
         $form->addInput($ID);
-        $PageSize = new Typecho_Widget_Helper_Form_Element_Text('PageSize', NULL, '10', _t('每次加载的数量'), _t('填写每次加载的数量，不填默认为 10。注意：豆瓣限制最多取得 100 条数据。'));
+        $PageSize = new Typecho_Widget_Helper_Form_Element_Text('PageSize', NULL, '12', _t('每次加载的数量'), _t('填写每次加载的数量，不填默认为 10。注意：豆瓣限制最多取得 100 条数据。'));
         $form->addInput($PageSize);
         $ValidTimeSpan = new Typecho_Widget_Helper_Form_Element_Text('ValidTimeSpan', NULL, '86400', _t('缓存过期时间'), _t('填写缓存过期时间，单位秒。默认 24 小时。'));
         $form->addInput($ValidTimeSpan);
@@ -98,7 +100,7 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
         echo '"</script>';
 
         echo '<script type="text/javascript" src="';
-        Helper::options()->pluginUrl('DoubanBoard/assets/DoubanBoard.06.js');
+        Helper::options()->pluginUrl('DoubanBoard/assets/DoubanBoard.07.js');
         echo '?v='.DoubanBoard_Plugin_VERSION.'"></script>';
     }
 }
