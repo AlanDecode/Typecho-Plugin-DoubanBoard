@@ -7,15 +7,9 @@
  * @author      熊猫小A | AlanDecode
  * @version     0.1
  */
-?>
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
-<?php if (!defined('__TYPECHO_ROOT_DIR__')) {
-    exit;
-}
-?>
-
-<?php
-require 'ParserDom.php';
+require_once 'simple_html_dom.php';
 
 function curl_file_get_contents($_url, $type='www')
 {
@@ -67,23 +61,24 @@ class DoubanAPI
                 break;
             }
 
-            $doc = new \HtmlParser\ParserDom($raw);
+            $doc = str_get_html($raw);
+            
             $itemArray = $doc->find("div.item");
             foreach ($itemArray as $v) {
                 $t = $v->find("li.title", 0);
                 $movie_name = str_replace(array(" ", "　", "\t", "\n", "\r"),
-                    array("", "", "", "", ""), $t->getPlainText());
-                $movie_img = $v->find("div.pic a img", 0)->getAttr("src");
+                    array("", "", "", "", ""), $t->text());
+                $movie_img = $v->find("div.pic a img", 0)->src;
 
                 // 使用 wp 接口解决防盗链
                 $movie_img = 'https://i0.wp.com/' . str_replace(array('http://', 'https://'), '', $movie_img);
 
-                $movie_url = $t->find("a", 0)->getAttr("href");
+                $movie_url = $t->find("a", 0)->href;
                 $data[] = array("name" => $movie_name, "img" => $movie_img, "url" => $movie_url);
             }
             $url = $doc->find("span.next a", 0);
             if ($url) {
-                $api = "https://movie.douban.com" . $url->getAttr("href");
+                $api = "https://movie.douban.com" . $url->href;
             } else {
                 $api = null;
             }
