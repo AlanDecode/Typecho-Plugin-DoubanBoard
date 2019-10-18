@@ -23,6 +23,14 @@ class DoubanBoard_Plugin implements Typecho_Plugin_Interface
      */
     public static function activate()
     {
+        // 检查是否存在对应扩展
+        if (!extension_loaded('openssl')) {
+            throw new Typecho_Plugin_Exception('启用失败，PHP 需启用 OpenSSL 扩展。');
+        }
+        if (!extension_loaded('curl')) {
+            throw new Typecho_Plugin_Exception('启用失败，PHP 需启用 CURL 扩展。');
+        }
+
         Typecho_Plugin::factory('Widget_Archive')->footer = array('DoubanBoard_Plugin', 'footer');
         Helper::addRoute("route_DoubanBoard","/DoubanBoard","DoubanBoard_Action",'action');
     }
