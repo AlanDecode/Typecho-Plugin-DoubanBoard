@@ -115,7 +115,7 @@
         width: calc(25% - 15px);
     }
 }
-@media screen and (max-width:400px){
+@media screen and (max-width:450px){
     .doubanboard-item{
         width: calc(50% - 15px);
     }
