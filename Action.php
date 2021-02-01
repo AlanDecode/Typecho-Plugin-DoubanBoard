@@ -40,7 +40,7 @@ class DoubanAPI
      */
     private static function __getBookRawData($UserID)
     {
-        $api = 'https://api.douban.com/v2/book/user/' . $UserID . '/collections?apikey=0b2bdeda43b5688921839c8ecb20399b&count=100';
+        $api = 'https://api.douban.com/v2/book/user/' . $UserID . '/collections?apikey=054022eaeae0b00e0fc068c0c0a2102a&count=100';
         return json_decode(curl_file_get_contents($api, 'book'), true);
     }
 
@@ -308,9 +308,9 @@ public static function updateMovieCacheAndReturn($UserID, $PageSize, $From, $Val
         //     $needUpdate = true;
         //     $cache[$Type][$ID]['time'] = time();
         //     if ($Type == 'book') {
-        //         $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/book/' . $ID . '?apikey=0b2bdeda43b5688921839c8ecb20399b', 'book');
+        //         $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/book/' . $ID . '?apikey=054022eaeae0b00e0fc068c0c0a2102a', 'book');
         //     } else {
-        //         $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/movie/subject/' . $ID . '?apikey=0b2bdeda43b5688921839c8ecb20399b', 'movie');
+        //         $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/movie/subject/' . $ID . '?apikey=054022eaeae0b00e0fc068c0c0a2102a', 'movie');
         //     }
         // }
 
@@ -320,9 +320,9 @@ public static function updateMovieCacheAndReturn($UserID, $PageSize, $From, $Val
         if ($needUpdate) {
             $cache[$Type][$ID]['time'] = time();
             if ($Type == 'book') {
-                $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/book/' . $ID . '?apikey=0b2bdeda43b5688921839c8ecb20399b', 'book');
+                $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/book/' . $ID . '?apikey=054022eaeae0b00e0fc068c0c0a2102a', 'book');
             } else {
-                $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/movie/subject/' . $ID . '?apikey=0b2bdeda43b5688921839c8ecb20399b', 'movie');
+                $cache[$Type][$ID]['data'] = self::__getSingleRawData('https://api.douban.com/v2/movie/subject/' . $ID . '?apikey=054022eaeae0b00e0fc068c0c0a2102a', 'movie');
             }
             file_put_contents($FilePath, json_encode($cache));
         }
